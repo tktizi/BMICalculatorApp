@@ -1,29 +1,39 @@
 public class BMICalculatorApp {
     public static void main(String[] args) {
-        // --- Перевірка основного класу BMI ---
+        // --- Тест для HumanBMI ---
         HumanBMI person = new HumanBMI(80, 1.52);
         System.out.println("BMI: " + String.format("%.2f", person.getBMI()));
         System.out.println("Status: " + person.getResult());
 
-        // --- Тести для класу Triangle ---
+        // --- Тести для Triangle ---
         System.out.println("\n=== TESTS FOR TRIANGLE ===");
-        Triangle t = new Triangle(3, 4, 5);
+        Triangle t1 = new Triangle(3, 4, 5);
+        Triangle t2 = new Triangle(6, 6, 6);
 
-        // 1. Периметр
-        System.out.println("Perimeter test: " + t.getPerimeter());
+        // ------------------- TESTS -------------------
+        // 1️⃣ getPerimeter()
+        System.out.println("Perimeter test #1: " + t1.getPerimeter() + " (expected 12.0)");
+        System.out.println("Perimeter test #2: " + t2.getPerimeter() + " (expected 18.0)");
 
-        // 2. Площа
-        System.out.println("Area test: " + String.format("%.2f", t.getArea()));
+        // 2️⃣ getArea()
+        System.out.println("Area test #1: " + String.format("%.2f", t1.getArea()) + " (expected 6.00)");
+        System.out.println("Area test #2: " + String.format("%.2f", t2.getArea()) + " (expected ~15.59)");
 
-        // 3. Перевірка типу
-        System.out.println("Type test: " + t.getType());
+        // 3️⃣ getType()
+        System.out.println("Type test #1: " + t1.getType() + " (expected Scalene)");
+        System.out.println("Type test #2: " + t2.getType() + " (expected Equilateral)");
 
-        // 4. Перевірка чи прямокутний
-        System.out.println("Is right triangle test: " + t.isRightTriangle());
+        // 4️⃣ isRightTriangle()
+        System.out.println("Is right triangle test #1: " + t1.isRightTriangle() + " (expected true)");
+        System.out.println("Is right triangle test #2: " + t2.isRightTriangle() + " (expected false)");
 
-        // 5. Масштабування
-        t.scale(2);
-        System.out.println("Scaled perimeter test: " + t.getPerimeter());
+        // 5️⃣ scale()
+        Triangle t3 = new Triangle(3, 4, 5);
+        Triangle t4 = new Triangle(2, 2, 3);
+        t3.scale(2);
+        t4.scale(0.5);
+        System.out.println("Scaled perimeter test #1: " + t3.getPerimeter() + " (expected 24.0)");
+        System.out.println("Scaled perimeter test #2: " + String.format("%.2f", t4.getPerimeter()) + " (expected 3.50)");
     }
 }
 
@@ -68,7 +78,7 @@ class HumanBMI {
     }
 }
 
-// --- Додатковий клас-фігура ---
+// --- Клас фігури: Трикутник ---
 class Triangle {
     private double a, b, c;
 
@@ -78,37 +88,37 @@ class Triangle {
         this.a = a; this.b = b; this.c = c;
     }
 
-    /** 1️⃣ Перевірка валідності трикутника */
+    /** Перевірка валідності трикутника */
     private boolean isValid(double a, double b, double c) {
         return (a + b > c) && (a + c > b) && (b + c > a);
     }
 
-    /** 2️⃣ Обчислення периметра */
+    /** 1️⃣ Обчислення периметра */
     public double getPerimeter() {
         return a + b + c;
     }
 
-    /** 3️⃣ Обчислення площі (формула Герона) */
+    /** 2️⃣ Обчислення площі (формула Герона) */
     public double getArea() {
         double p = getPerimeter() / 2;
         return Math.sqrt(p * (p - a) * (p - b) * (p - c));
     }
 
-    /** 4️⃣ Визначення типу трикутника */
+    /** 3️⃣ Визначення типу трикутника */
     public String getType() {
         if (a == b && b == c) return "Equilateral";
         else if (a == b || a == c || b == c) return "Isosceles";
         else return "Scalene";
     }
 
-    /** 5️⃣ Перевірка, чи прямокутний */
+    /** 4️⃣ Перевірка, чи прямокутний */
     public boolean isRightTriangle() {
         double[] sides = {a, b, c};
         java.util.Arrays.sort(sides);
         return Math.abs(Math.pow(sides[2], 2) - (Math.pow(sides[0], 2) + Math.pow(sides[1], 2))) < 1e-6;
     }
 
-    /** 6️⃣ Масштабування (зміна розмірів) */
+    /** 5️⃣ Масштабування (зміна розмірів) */
     public void scale(double factor) {
         if (factor <= 0) throw new IllegalArgumentException("Scale factor must be positive");
         a *= factor;
